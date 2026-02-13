@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para ti  mi amooor❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none; /* Evita que seleccione texto al tocar rápido */
+            -webkit-tap-highlight-color: transparent; /* Quita el cuadro azul al tocar en Android */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh; /* Usa la altura dinámica del viewport móvil */
+            background-color: #ffe6e6;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px; /* Padding ajustado para móviles */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 10;
+            width: 100%;
+            max-width: 400px; /* Ancho máximo ideal para celulares */
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 1.8rem; /* Tamaño de fuente responsivo */
+            margin: 15px 0;
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .gif-container img {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            height: 60px; /* Altura fija para evitar saltos */
+            position: relative;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            touch-action: manipulation; /* Mejora la respuesta táctil */
+            white-space: nowrap;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #yesBtn {
+            background-color: #28a745;
+            color: white;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        #noBtn {
+            background-color: #dc3545;
+            color: white;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+            /* Importante: posición absoluta inicial relativa al grupo para que empiece centrado */
+            position: relative; 
+        }
+
+        /* Lluvia de fondo */
+        .heart {
+            position: absolute;
+            top: -5vh;
+            font-size: 20px;
+            animation: fall linear forwards;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Ajustes específicos para pantallas pequeñas */
+        @media (max-width: 380px) {
+            h1 { font-size: 1.5rem; }
+            p { font-size: 1rem; }
+            button { padding: 10px 20px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainCard">
+        <div class="gif-container">
+            
+        </div>
+        
+        <h1>Hola mi vida hermosaaaaaaa</h1>
+        <p>¿Quieres ser mi San Valentín?</p>
+
+        <div class="btn-group">
+            <button id="yesBtn" onclick="acepto()">¡Sí!</button>
+            <button id="noBtn" onclick="moverBoton()" onmouseenter="moverBoton()">No</button>
+        </div>
+    </div>
+
+    <script>
+        let moved = false;
+
+        function moverBoton(e) {
+            // Evitamos que el botón haga click si logran tocarlo
+            if(e) e.preventDefault();
+
+            const btnNo = document.getElementById('noBtn');
+            const container = document.querySelector('.container');
+            
+            // Obtenemos las dimensiones de la pantalla visible
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Obtenemos dimensiones del botón
+            const btnRect = btnNo.getBoundingClientRect();
+            const btnWidth = btnRect.width;
+            const btnHeight = btnRect.height;
+            
+            // Calculamos límites seguros (padding de 20px)
+            // Esto asegura que el botón NO se salga de la pantalla del celular
+            const maxX = windowWidth - btnWidth - 20;
+            const maxY = windowHeight - btnHeight - 20;
+            const minX = 20;
+            const minY = 20;
+
+            // Generamos nueva posición aleatoria dentro de los límites
+            let newX = Math.random() * (maxX - minX) + minX;
+            let newY = Math.random() * (maxY - minY) + minY;
+
+            // Aplicamos posición FIXED para que se salga del flujo normal y se mueva por toda la pantalla
+            btnNo.style.position = "fixed";
+            btnNo.style.left = newX + "px";
+            btnNo.style.top = newY + "px";
+            
+            // Añadimos z-index alto para que no quede detrás de nada
+            btnNo.style.zIndex = "100";
+        }
+
+        function acepto() {
+            const card = document.getElementById('mainCard');
+            // Detenemos la lluvia de corazones normales
+            clearInterval(heartInterval);
+            
+            // Limpiamos corazones existentes
+            document.querySelectorAll('.heart').forEach(h => h.remove());
+
+            card.innerHTML = `
+                <div class="gif-container">
+                    <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Happy Cat">
+                </div>
+                <h1 style="color: #28a745; margin-bottom: 10px;">Nos vemos el sabado mi amoor ❤️</h1>
+                <p>Omgg te amo mi amooor</p>
+                <p style="font-size: 2rem;">❤️❤️❤️❤️</p>
+            `;
+            
+            // Lanzamos la celebración con TULIPANES
+            lanzarTulipanes();
+        }
+
+        // Lluvia de fondo (Corazones suaves)
+        function crearCorazonFondo() {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤', '💖', '💕'][Math.floor(Math.random() * 3)];
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // Lento y suave
+            heart.style.fontSize = Math.random() * 15 + 10 + 'px'; // Pequeños
+            heart.style.opacity = Math.random() * 0.5 + 0.3; // Transparentes
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        // Lluvia final (TULIPANES intensos)
+        function lanzarTulipanes() {
+            // Creamos muchos tulipanes rápido
+            const tulipanInterval = setInterval(() => {
+                const tulip = document.createElement('div');
+                tulip.innerHTML = '🌷'; // AQUÍ ESTÁN LOS TULIPANES
+                tulip.classList.add('heart'); // Reusamos la clase para la animación
+                tulip.style.left = Math.random() * 100 + 'vw';
+                tulip.style.animationDuration = Math.random() * 2 + 2 + 's'; // Más rápidos
+                tulip.style.fontSize = Math.random() * 20 + 25 + 'px'; // Más grandes
+                tulip.style.opacity = 1; // Totalmente visibles
+                tulip.style.zIndex = 5;
+                document.body.appendChild(tulip);
+                
+                setTimeout(() => tulip.remove(), 4000);
+            }, 100); // Cada 100ms un tulipán nuevo
+        }
+
+        let heartInterval;
+        // Iniciar
+        window.onload = function() {
+            heartInterval = setInterval(crearCorazonFondo, 400); // Lluvia suave al inicio
+        };
+    </script>
+</body>
+</html>
